@@ -62,7 +62,6 @@ class Day extends Component {
         } , ()=> { 
             let arr= total
             let obj= {total: total , ID: this.props.valueID}
-            console.log(obj)
             let date= this.props.valueID
             this.props.pushArray(obj,arr,date)
         })
