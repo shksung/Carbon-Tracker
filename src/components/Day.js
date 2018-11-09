@@ -13,10 +13,6 @@ class Day extends Component {
         foodNumber: 0
     }
 
-
-    //weeksInYear = 52
-    //carbonPerGallon = 0.4
-
     
     updateState = (e) => {
         this.setState({
@@ -116,49 +112,56 @@ class Day extends Component {
 
 
         return (
-            <div className= "App">
-                <h1>Carbon Calculator</h1>
-                <div className='container'>
-                    <div className='col'>
-                        <div className='row'>
-                            <h2>Travel</h2>
-                            <p>How do you move around?</p>
-                            <select ref={self => this.moveAroundSelect = self} name='travelMode' onChange={this.updateState}>
-                                <option></option>
-                                <option value='drive'>Drive</option>
-                                <option value='publicbus'>Public Bus</option>
-                                <option value='walk'>Walk</option>
-                                <option value='bike'>Bike</option>
-                                <option value='none'>None of the above</option>
-                            </select>
+            <div className="App">
+            <nav>
+              <h1 className='dayCC'>Carbon Calculator</h1>
+              </nav>
+              <div className="container">
+                  <div className="row">
+                      <div className="colume">
+                          <h3>Travel </h3>
+                          <p>How do you move around?</p>
+                          <select name='travelMode' onChange={this.updateState}>
+                              <option></option>
+                              <option value='drive'>Drive</option>
+                              <option value='publicbus'>Public Bus</option>
+                              <option value='walk'>Walk</option>
+                              <option value='bike'>Bike</option>
+                              <option value='none'>None of the above</option>
+                          </select>
+                          {output}
+                      </div>
 
-                            <div>{output}</div>
-                            <div>
-                                <h2>Heating Consumption</h2>
-                                <div>How Long do You Keep On The Heater Per Day? (hours)  <input onChange={this.time} /> </div>
-                                <div>Wattage (found on appliance label) (in KW)  <input onChange={this.watt} /> </div>
-                            </div>
-                            <div className='row'>
-                                <p>What are you eating today? </p>
-                                <select onChange= {this.updateState} name= "food" >
-                                    <option value=""> </option>
-                                    <option value='humbergur'>Humburger</option>
-                                    <option value='bacon'>Bacon</option>
-                                    <option value='steak'>Steak</option>
-                                    <option value='beef'>Beef</option>
-                                    <option value='none'>None of the above</option>
-                                </select>
-                                <p>How many times do you eat this meal per day?</p>
-                                RatePerWeek<input name="foodNumber" type='text' onChange={this.updateState} />
-                            </div>
-                            <button onClick={this.updateResult }>Calculate</button>
-                            {total}
-                        </div>
-                    </div>
-                </div>
-            </div>
+                      <div className="colume">
+                          <h3>Heating Consumption</h3>
+                          <p>How Long do You Keep On The Heater Per Day? (hours)</p>
+                          <input onChange={this.time} />
+                          <p>Wattage (found on appliance label) (in KW)</p>
+                          <input onChange={this.watt} />
+                      </div>
+
+                      <div className="colume">
+                          <h3>Meat Meal</h3>
+                          <p>What are you eating today? </p>
+                          <select onChange={this.updateState} name="food" >
+                              <option value=""> </option>
+                              <option value='humbergur'>Humburger</option>
+                              <option value='bacon'>Bacon</option>
+                              <option value='steak'>Steak</option>
+                              <option value='beef'>Beef</option>
+                              <option value='none'>None of the above</option>
+                          </select>
+                          <p>How many times do you eat this meal per day?</p>
+                          RatePerWeek<input name="foodNumber" type='text' onChange={this.updateState} />
+                      </div>
+                  </div>
+              </div>
+              <div><button onClick={this.updateResult}>Calculate</button></div>
+              {total}
+          </div>
         )
     }
 }
+
 
 export default Day;

@@ -37,3 +37,58 @@
     transform: rotate(360deg);
   }
 }
+
+*{
+  font-family: 'Josefin Sans', sans-serif;
+}
+
+.colume{
+    border-radius: 25px;
+    border: 2px solid rgba(63, 179, 59, 0.863);
+    padding: 20px; 
+    width: 300px;
+    height: 300px; 
+    margin: 10px;   
+    background-color:rgba(255, 217, 0, 0.378)
+}
+nav{
+  background-color: rgba(255, 217, 0, 0.678);
+  width:100%
+}
+#calender{
+  margin-top: 40px
+}
+.appCC{
+  padding: 30px;
+  text-align: center;
+  color:  rgba(63, 179, 59, 0.863);
+  font-weight: bold;
+}
+.dayCC{
+  padding: 20px;
+  margin-bottom: 15px;
+  text-align: center;
+  color:  rgba(63, 179, 59, 0.863);
+  font-weight: bold;
+}
+.row{
+  padding-top: 40px;
+}
+button{
+  background-color:  rgba(63, 179, 59, 0.763);
+  border: none;
+  color:rgba(255, 217, 0, 0.878);
+  padding: 8px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  font-size:20px;
+  border-radius: 5px;
+}
+
+
+
+
