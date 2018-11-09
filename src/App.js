@@ -35,7 +35,7 @@ class App extends Component {
 
 
     return (
-      <div className="App">
+      <div >
         <div>
 
         </div>
@@ -63,7 +63,7 @@ class Home extends Component {
     var year = date.getFullYear();
     this.setState({
       date: date,
-      value: String(day) + "-" + String(monthIndex) + "-" + String(year)
+      value: String(monthIndex) + "-" + String(day) + "-" + String(year)
     }, () => { this.props.grabValue(this.state.value) })
   }
   render() {
@@ -72,7 +72,7 @@ class Home extends Component {
       labels: this.props.datesArray,
       datasets: [
         {
-          label: 'My First dataset',
+          label: 'Carbon Emission',
           fill: false,
           lineTension: 0.1,
           backgroundColor: 'rgba(75,192,192,0.4)',
@@ -98,15 +98,18 @@ class Home extends Component {
     return (
       <div>
         <div>
-          <h1>Carbon Calendar</h1>
-          <div>
+          <h1 className= "App">Carbon Calendar</h1>
+          <div className= "App">
           <Calendar
+            className= "App"
             onChange={this.dateClick}
             value={this.state.date}
 
           />
           </div>
+          <Link to={"/" + String(this.state.value)}><div className="App"><button>Go</button></div></Link>
           <div>
+            <div>
           <Line data={data}
             height={400}
             width={200}
@@ -114,9 +117,10 @@ class Home extends Component {
               maintainAspectRatio: false
             }} />
             </div>
+            </div>
         </div>
         <div>
-          <Link to={"/" + String(this.state.value)}><div className="left"><button>Go</button></div></Link>
+          
         </div>
       </div>
     )

@@ -13,6 +13,7 @@ class Day extends Component {
         foodNumber: 0
     }
 
+
     //weeksInYear = 52
     //carbonPerGallon = 0.4
 
@@ -60,7 +61,8 @@ class Day extends Component {
             total: total
         } , ()=> { 
             let arr= total
-            let obj= {total: total , ID: this.state.valueID}
+            let obj= {total: total , ID: this.props.valueID}
+            console.log(obj)
             let date= this.props.valueID
             this.props.pushArray(obj,arr,date)
         })
@@ -115,7 +117,7 @@ class Day extends Component {
 
 
         return (
-            <div>
+            <div className= "App">
                 <h1>Carbon Calculator</h1>
                 <div className='container'>
                     <div className='col'>
@@ -147,7 +149,7 @@ class Day extends Component {
                                     <option value='beef'>Beef</option>
                                     <option value='none'>None of the above</option>
                                 </select>
-                                <p>How many times to this meal per week</p>
+                                <p>How many times do you eat this meal per day?</p>
                                 RatePerWeek<input name="foodNumber" type='text' onChange={this.updateState} />
                             </div>
                             <button onClick={this.updateResult }>Calculate</button>
