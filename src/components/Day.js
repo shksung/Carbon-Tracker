@@ -59,9 +59,11 @@ class Day extends Component {
         this.setState({
             total: total
         } , ()=> { 
+            let arr= total
             let obj= {total: total , ID: this.state.valueID}
-            this.props.pushArray(obj)
-        } )
+            let date= this.props.valueID
+            this.props.pushArray(obj,arr,date)
+        })
 
     }
 

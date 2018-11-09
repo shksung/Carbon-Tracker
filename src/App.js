@@ -4,35 +4,46 @@ import './App.css';
 import { Route, Switch, Link } from 'react-router-dom'
 import Calendar from 'react-calendar';
 import Day from './components/Day.js'
+import { Line } from 'react-chartjs-2';
+
+
 
 
 class App extends Component {
-  
-  state= {
+
+  state = {
     dailyConsumptionArray: [],
+    numbersArray: [],
+    datesArray: [],
     valueID: 0
   }
 
-  grabValue = (value)=> {
-    this.setState ({
-      valueID:value
+  grabValue = (value) => {
+    this.setState({
+      valueID: value
     })
   }
 
-  pushArray =(arr) => {
-    this.setState ({
-      dailyConsumptionArray: this.state.dailyConsumptionArray.concat(arr)
+  pushArray = (obj, arr, date) => {
+    this.setState({
+      dailyConsumptionArray: this.state.dailyConsumptionArray.concat(obj),
+      numbersArray: this.state.numbersArray.concat(arr),
+      datesArray: this.state.datesArray.concat(date)
     })
   }
   render() {
+
+
     return (
       <div className="App">
-       
-        <Switch>
-        <Route exact path="/" render={() => <Home grabValue= {this.grabValue} />} > </Route>
-        <Route path="/:day" render={() => <Day valueID= {this.state.valueID} pushArray= {this.pushArray} />} > </Route>
-        </Switch>
+        <div>
 
+        </div>
+
+        <Switch>
+          <Route exact path="/" render={() => <Home datesArray= {this.state.datesArray} valueID={this.state.valueID} numbersArray={this.state.numbersArray} grabValue={this.grabValue} />} > </Route>
+          <Route path="/:day" render={() => <Day valueID={this.state.valueID} pushArray={this.pushArray} />} > </Route>
+        </Switch>
       </div>
     );
   }
@@ -52,22 +63,62 @@ class Home extends Component {
     var year = date.getFullYear();
     this.setState({
       date: date,
-      value: String(day) + "-" +String (monthIndex)+ "-" + String(year)
-    }, ()=>{this.props.grabValue(this.state.value)} )
+      value: String(day) + "-" + String(monthIndex) + "-" + String(year)
+    }, () => { this.props.grabValue(this.state.value) })
   }
-  render () {
+  render() {
+    console.log(this.props.numbersArray)
+    const data = {
+      labels: this.props.datesArray,
+      datasets: [
+        {
+          label: 'My First dataset',
+          fill: false,
+          lineTension: 0.1,
+          backgroundColor: 'rgba(75,192,192,0.4)',
+          borderColor: 'rgba(75,192,192,1)',
+          borderCapStyle: 'butt',
+          borderDash: [],
+          borderDashOffset: 0.0,
+          borderJoinStyle: 'miter',
+          pointBorderColor: 'rgba(75,192,192,1)',
+          pointBackgroundColor: '#fff',
+          pointBorderWidth: 1,
+          pointHoverRadius: 5,
+          pointHoverBackgroundColor: 'rgba(75,192,192,1)',
+          pointHoverBorderColor: 'rgba(220,220,220,1)',
+          pointHoverBorderWidth: 2,
+          pointRadius: 1,
+          pointHitRadius: 10,
+          data: this.props.numbersArray
+        }
+      ]
+    }
+
     return (
       <div>
-      <div>
-      <Calendar
-        onChange={this.dateClick}
-        value={this.state.date}
-      /> 
-    </div>
-    <div>
-      <Link to={"/" + String(this.state.value)}><div className= "left"><button>Go</button></div></Link>
-    </div>
-    </div>
+        <div>
+          <h1>Carbon Calendar</h1>
+          <div>
+          <Calendar
+            onChange={this.dateClick}
+            value={this.state.date}
+
+          />
+          </div>
+          <div>
+          <Line data={data}
+            height={400}
+            width={200}
+            options={{
+              maintainAspectRatio: false
+            }} />
+            </div>
+        </div>
+        <div>
+          <Link to={"/" + String(this.state.value)}><div className="left"><button>Go</button></div></Link>
+        </div>
+      </div>
     )
   }
 }
