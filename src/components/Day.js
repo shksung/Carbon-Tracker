@@ -16,6 +16,7 @@ class Day extends Component {
     //weeksInYear = 52
     //carbonPerGallon = 0.4
 
+    
     updateState = (e) => {
         this.setState({
             [e.target.name]: e.target.value
@@ -57,7 +58,11 @@ class Day extends Component {
 
         this.setState({
             total: total
-        })
+        } , ()=> { 
+            let obj= {total: total , ID: this.state.valueID}
+            this.props.pushArray(obj)
+        } )
+
     }
 
     time = (e) => {
@@ -143,7 +148,7 @@ class Day extends Component {
                                 <p>How many times to this meal per week</p>
                                 RatePerWeek<input name="foodNumber" type='text' onChange={this.updateState} />
                             </div>
-                            <button onClick={this.updateResult}>Calculate</button>
+                            <button onClick={this.updateResult }>Calculate</button>
                             {total}
                         </div>
                     </div>

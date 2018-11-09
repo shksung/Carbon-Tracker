@@ -9,17 +9,28 @@ import Day from './components/Day.js'
 class App extends Component {
   
   state= {
-    dailyConsumptionArray: []
+    dailyConsumptionArray: [],
+    valueID: 0
   }
 
+  grabValue = (value)=> {
+    this.setState ({
+      valueID:value
+    })
+  }
 
+  pushArray =(arr) => {
+    this.setState ({
+      dailyConsumptionArray: this.state.dailyConsumptionArray.concat(arr)
+    })
+  }
   render() {
     return (
       <div className="App">
        
         <Switch>
-        <Route exact path="/" render={() => <Home />} > </Route>
-        <Route path="/:day" render={() => <Day />} > </Route>
+        <Route exact path="/" render={() => <Home grabValue= {this.grabValue} />} > </Route>
+        <Route path="/:day" render={() => <Day valueID= {this.state.valueID} pushArray= {this.pushArray} />} > </Route>
         </Switch>
 
       </div>
@@ -34,6 +45,7 @@ class Home extends Component {
     month: "",
     value: 0
   }
+
   dateClick = (date) => {
     var day = date.getDate();
     var monthIndex = date.getMonth();
@@ -41,7 +53,7 @@ class Home extends Component {
     this.setState({
       date: date,
       value: String(day) + "-" +String (monthIndex)+ "-" + String(year)
-    })
+    }, ()=>{this.props.grabValue(this.state.value)} )
   }
   render () {
     return (
