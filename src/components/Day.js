@@ -21,7 +21,6 @@ class Day extends Component {
     }
 
     updateResult = () => {
-
         const moveAround = this.state.travelMode
         let travelResult
         let heatingResult
@@ -48,7 +47,6 @@ class Day extends Component {
         heatingResult = kwh * 0.264
 
         foodResult = this.state.foodNumber * 4.7
-
 
         total = heatingResult + travelResult + foodResult
 
@@ -84,10 +82,12 @@ class Day extends Component {
     render() {
         let output
         let total
+        let projection
+        let money
 
         if (this.state.travelMode === 'drive') {
             output = <div ref={self => this.driveDetialsSelect = self}>
-                <p>Driving is your ..,,will use if else statement to show this option</p>
+                <p>Driving is your mode of transportation</p>
                 MilesPerDay<input type='text' name='drivingMPD' onChange={this.updateState} />
                 MilesPerGallon<input type='text' name='drivingMPG' onChange={this.updateState} />
             </div>
@@ -95,26 +95,24 @@ class Day extends Component {
 
         else if (this.state.travelMode === 'publicbus') {
             output = <div ref={self => this.publicbusDetialsSelect = self}>
-                <p>Public Bus is your ..,,will use if else statement to show this option</p>
+                <p>Public Bus is your mode of transportation</p>
                 MilesPerDay<input type='text' name='drivingMPD' onChange={this.updateState} />
             </div>
         }
 
         else if (this.state.travelMode === 'walk' || this.state.travelMode === 'bike') {
-            output = <div><p>Bike and Walk is your way..,,will use if else statement to show this option</p>
+            output = <div><p>Bike or Walk is your mode of transportation</p>
                 <p> Your are amzing green person</p></div>
         }
-
-        if (this.state.total !== 0) {
-        total = 
-         <p>Total C02 Emission: {this.state.total}</p>
-    }
-
+        if(this.state.total != 0) {
+            total= this.state.total
+            projection= total * 365* 0.4 
+            money= projection * 1.3
+        }
 
         return (
             <div className="App">
             <nav>
-              <h1 className='dayCC'>Carbon Calculator</h1>
               </nav>
               <div className="container">
                   <div className="row">
@@ -129,7 +127,7 @@ class Day extends Component {
                               <option value='bike'>Bike</option>
                               <option value='none'>None of the above</option>
                           </select>
-                          {output}
+                           {output}
                       </div>
 
                       <div className="colume">
@@ -145,19 +143,21 @@ class Day extends Component {
                           <p>What are you eating today? </p>
                           <select onChange={this.updateState} name="food" >
                               <option value=""> </option>
-                              <option value='humbergur'>Humburger</option>
+                              <option value='humbergur'>Hamburger</option>
                               <option value='bacon'>Bacon</option>
                               <option value='steak'>Steak</option>
                               <option value='beef'>Beef</option>
                               <option value='none'>None of the above</option>
                           </select>
                           <p>How many times do you eat this meal per day?</p>
-                          RatePerWeek<input name="foodNumber" type='text' onChange={this.updateState} />
+                          RatePerDay<input name="foodNumber" type='text' onChange={this.updateState} />
                       </div>
                   </div>
               </div>
               <div><button onClick={this.updateResult}>Calculate</button></div>
-              {total}
+              <div id='total'> Carbon Emission: {total} kg</div>
+              <div> Yearly Global Impact Projection: {projection} L of Petrol in A Year </div>
+              <div> Price: $ {money}   </div>
           </div>
         )
     }

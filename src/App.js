@@ -5,7 +5,8 @@ import { Route, Switch, Link } from 'react-router-dom'
 import Calendar from 'react-calendar';
 import Day from './components/Day.js'
 import { Line } from 'react-chartjs-2';
-import {Carousel} from "react-responsive-carousel"
+import { Carousel } from "react-responsive-carousel"
+import axios from 'axios'
 
 
 
@@ -33,10 +34,22 @@ class App extends Component {
       numbersArray: this.state.numbersArray.concat(arr),
       filteredArray: this.state.numbersArray.concat(arr),
       datesArray: this.state.datesArray.concat(date),
-      filteredDates:this.state.datesArray.concat(date)
-    })
+      filteredDates: this.state.datesArray.concat(date)
+    }, () => {
+      axios.post('http://localhost:8080/data', this.state.dailyConsumptionArray)
+    },
+    )
   }
 
+  componentDidMount = () => {
+    axios.get('http://localhost:8080/data')
+      .then((res) => {
+        console.log(res)
+        this.setState({
+          dailyConsumptionArray: res.data
+        })
+      })
+  }
 
   filteredArray = (ID, number) => {
     let index
@@ -47,16 +60,23 @@ class App extends Component {
     }
     let newObject = this.state.dailyConsumptionArray.splice(index, number)
     let newArray = []
-    let filteredDates =[]
+    let filteredDates = []
     for (let i = 0; i < newObject.length; i++) {
       newArray = newArray.concat(newObject[i].total)
-      filteredDates= newArray.concat(newObject[i].ID)
+      filteredDates = newArray.concat(newObject[i].ID)
     }
-   
+
 
     this.setState({
       filteredArray: newArray,
       filteredDates: filteredDates
+    })
+  }
+
+  reset = () => {
+    this.setState({
+      filteredArray: this.state.numbersArray,
+      filteredDates: this.state.datesArray
     })
   }
 
@@ -67,16 +87,18 @@ class App extends Component {
       <div >
         <div>
           <nav>
-            <Link to='/'>Carbon Calender</Link>
-            <Link to='/global/data'>Global Carbon</Link>
-            <Link to='/landingpage'>Landing Page</Link>
+            <Link to='/go/landingpage'><img width="30%" height="30%" src="/images/logo-world.png" alt="" /> </Link>
+            <div className="nav-links">
+              <Link className="link" to='/'><img width="8%" height="5%" src="/images/calculator.png" alt="" />Carbon Calendar</Link>
+              <Link className="link" to='/global/data'><img width="8%" height="5%" src="/images/frog.png" alt="" />Global Carbon</Link>
+            </div>
           </nav>
 
 
         </div>
 
         <Switch>
-          <Route exact path="/" render={() => <Home filteredArray={this.filteredArray} filtered={this.state.filteredArray} datesArray={this.state.datesArray} valueID={this.state.valueID} numbersArray={this.state.numbersArray} grabValue={this.grabValue} />} />
+          <Route exact path="/" render={() => <Home reset={this.reset} filteredDates={this.state.filteredDates} filteredArray={this.filteredArray} filtered={this.state.filteredArray} datesArray={this.state.datesArray} valueID={this.state.valueID} numbersArray={this.state.numbersArray} grabValue={this.grabValue} />} />
           <Route exact path="/:day" render={() => <Day valueID={this.state.valueID} pushArray={this.pushArray} />} />
           <Route path="/global/data" component={GlobalData} />
           <Route path='/go/landingpage' render={() => <LandingPage />}></Route>
@@ -87,26 +109,26 @@ class App extends Component {
 }
 
 class LandingPage extends Component {
+
+
+
   render() {
     return (
-      <div>
-        <Carousel autoPlay={true} infiniteLoop={true}>
-          <div>
-            <img src="AK47.jpg" />
-
-          </div>
-          <div>
-            <img src="img1.jpg" />
-
-          </div>
-          <div>
-            <img src="nintendo.jpg" />
-
-          </div>
-        </Carousel>
-      </div>
+      <center>
+      <div className="landingcenter">
+      <div className="description">
+        <img width="75%" height="75%" src="/images/pollution.jpg"></img><br />
+          There are many lines of evidence which clearly show that the atmospheric CO2 increase is caused by humans.  The clearest of these is simple accounting - humans are emitting CO2 at a rate twice as fast as the atmospheric.  There is no question whatsoever that the CO2 increase is human-caused.
+  
+  --adapted from Encyclopedia.com
+  
+  The purpose of our project is to help show how your personal CO2 emission compares to averages around the world.
+          
+      </div></div></center>
     )
   }
+
+
 }
 
 class Home extends Component {
@@ -121,10 +143,10 @@ class Home extends Component {
 
   dateClick = (date) => {
     var day = date.getDate();
-    var monthIndex = date.getMonth() +1;
+    var monthIndex = date.getMonth() + 1;
     var year = date.getFullYear();
 
-    
+
     this.setState({
       date: date,
       value: String(monthIndex) + "-" + String(day) + "-" + String(year)
@@ -181,13 +203,14 @@ class Home extends Component {
               value={this.state.date}
 
             />
+            <Link to={"/" + String(this.state.value)}><div className="App"><button>Go</button></div></Link>
 
           </div>
           Start   <input onChange={this.dateInput} />
-          Day Range  <input onChange={this.numberInput} />  <button onClick={()=>this.props.filteredArray(this.state.ID, this.state.number)}>Submit</button>
-          <Link to={"/" + String(this.state.value)}><div className="App"><button>Go</button></div></Link>
+          Day Range  <input onChange={this.numberInput} />  <button onClick={() => this.props.filteredArray(this.state.ID, this.state.number)}>Submit</button><button onClick={this.props.reset}>Reset</button>
+
           <div>
-            <div>
+            <div className='graph'>
               <Line data={data}
                 height={400}
                 width={200}
